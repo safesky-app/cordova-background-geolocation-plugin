@@ -633,14 +633,21 @@ public class LocationServiceImpl extends Service implements ProviderDelegate, Lo
 
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
-        return super.registerReceiver(receiver, filter, null, mServiceHandler, RECEIVER_NOT_EXPORTED);
+        // SafeSky fix for older Android version
+        try {
+            return super.registerReceiver(receiver, filter, null, mServiceHandler, RECEIVER_NOT_EXPORTED);
+        } catch (Exception ex) {
+            // Expected on older hardware
+        }
+        return super.registerReceiver(receiver, filter, null, mServiceHandler);
     }
 
     @Override
     public void unregisterReceiver(BroadcastReceiver receiver) {
         try {
             super.unregisterReceiver(receiver);
-        } catch (IllegalArgumentException ex) {
+        // SafeSky fix for older Android version
+        } catch (Exception ex) {
             // if was not registered ignore exception
         }
     }
