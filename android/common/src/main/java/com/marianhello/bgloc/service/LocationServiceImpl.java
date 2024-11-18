@@ -636,7 +636,7 @@ public class LocationServiceImpl extends Service implements ProviderDelegate, Lo
         // SafeSky fix for older Android version
         try {
             return super.registerReceiver(receiver, filter, null, mServiceHandler, RECEIVER_NOT_EXPORTED);
-        } catch (Exception ex) {
+        } catch (NoSuchMethodError ex) {
             // Expected on older hardware
         }
         return super.registerReceiver(receiver, filter, null, mServiceHandler);
